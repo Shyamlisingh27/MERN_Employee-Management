@@ -39,7 +39,7 @@ const CreateEmployee = () => {
             formData.append(key, data[key]);
         });
 
-        const result = await axios.post('/api/employees', formData);
+        const result = await axios.post('http://localhost:8000/api/create', formData);
         alert('Employee created successfully!');
         reset();
         } catch (error) {
@@ -68,7 +68,7 @@ const CreateEmployee = () => {
       <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
         {/* Name */}
         <div style={styles.formGroup}>
-          <label>Name</label>
+          <label>Name</label> 
           <input
             type="text"
             {...register('name', { required: 'Name is required' })}

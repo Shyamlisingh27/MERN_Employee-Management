@@ -18,8 +18,9 @@ const EmployeeList = () => {
   // Fetch employee data from the backend
   useEffect(() => {
     const fetchEmployees = async () => {
+      
       try {
-        const response = await axios.get('/api/employees');
+        const response = await axios.get('http://localhost:8000/api/');
         setEmployees(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error('Error fetching employee data:', error);
@@ -53,18 +54,20 @@ const EmployeeList = () => {
           .includes(searchQuery.toLowerCase())
       )
     : [];
-
+    
   // Handle delete action
   const handleDelete = async (id) => {
+    console.log('Deleting employee with id:', id);
     try {
-      await axios.delete(`/api/employees/${id}`);
-      setEmployees(employees.filter((employee) => employee.id !== id));
+      await axios.delete(`http://localhost:8000/api/delete/${id}`);
+      setEmployees(employees.filter((employee) => employee._id !== id));
       alert('Employee deleted successfully!');
     } catch (error) {
       console.error('Error deleting employee:', error);
       alert('Failed to delete employee. Please try again.');
     }
   };
+  
 
   return (
     <div>
@@ -97,7 +100,7 @@ const EmployeeList = () => {
       <table style={styles.table}>
         <thead>
           <tr>
-            <th onClick={() => handleSort('id')}>ID {sortField === 'id' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}</th>
+            <th onClick={() => handleSort('_id')}>ID {sortField === 'id' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}</th>
             <th>Image</th>
             <th onClick={() => handleSort('name')}>Name {sortField === 'name' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}</th>
             <th onClick={() => handleSort('email')}>Email {sortField === 'email' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}</th>
@@ -110,9 +113,10 @@ const EmployeeList = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredEmployees.map((employee) => (
-            <tr key={employee.id}>
-              <td>{employee.id}</td>
+          
+          {filteredEmployees.map((employee,index) => (
+            <tr key={employee._id}>
+              <td>{index}</td>
               <td>
                 <img src={`/uploads/${employee.image}`} alt={employee.name} style={styles.image} />
               </td>
@@ -124,15 +128,17 @@ const EmployeeList = () => {
               <td>{employee.course.join(', ')}</td>
               <td>{new Date(employee.createdAt).toLocaleDateString()}</td>
               <td>
-                <Link to="/edit-employee" style={styles.actionButton} >
+                <Link to={`/edit-employee/${employee._id}`} style={styles.actionButton} >
                   Edit
                 </Link>
-                <button style={styles.actionButton} onClick={() => handleDelete(employee.id)}>
+                <button style={styles.actionButton} onClick={() => handleDelete(employee._id)}>
                   Delete
                 </button>
               </td>
             </tr>
-          ))}
+            
+          ))
+          }
         </tbody>
       </table>
     </div>
@@ -198,6 +204,8 @@ const styles = {
     margin: '0 5px',
     padding: '5px 10px',
     cursor: 'pointer',
+    borderRadius: '5px',
+    backgroundColor: 'orange'
   },
 };
 

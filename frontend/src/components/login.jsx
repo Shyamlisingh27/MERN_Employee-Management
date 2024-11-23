@@ -27,6 +27,7 @@ const login = () => {
       navigate("/homepage")
     }
     catch(error){
+      alert('Login failed!');
       setMessage(error.response?.data?.error || 'Login failed!');
     }
   }

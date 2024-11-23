@@ -16,12 +16,12 @@ app.use(cors({
     origin: 'http://localhost:5173', // Allow requests from this origin
     credentials: true, // Allow cookies and other credentials
 }))
-app.use('/uploads', express.static('uploads'));     //for local storage
+app.use('/uploads', express.static("uploads"));     //for local storage
 
 //routes
 app.use("/api",UserRoute);
 app.use("/api",EmployeeRoute);
-  
+
 
 app.listen(port,()=>{
     console.log(`server started on port: ${port}`);

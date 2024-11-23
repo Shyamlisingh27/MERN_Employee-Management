@@ -1,4 +1,5 @@
 const Employee = require('../models/employee');
+const mongoose=require("mongoose")
 
 //create emp
 exports.createEmployee = async (req, res) => {
@@ -30,6 +31,27 @@ exports.getEmployees = async (req, res) => {
       res.status(500).json({ message: err.message });
     }
 };
+
+//get emp by id
+exports.getEmployeeById=async (req, res) => {
+    const { id } = req.params;
+
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'Invalid employee ID format' });
+    }
+
+    try {
+        const employee = await Employee.findById(id);
+        if (!employee) {
+            return res.status(404).json({ error: 'Employee not found' });
+        }
+        res.json(employee);
+    } catch (error) {
+        console.error('Error fetching employee:', error);
+        res.status(500).json({ error: 'Server error' });
+}
+}
 
 
 //update emp
@@ -65,3 +87,5 @@ exports.duplicateEmail=async (req, res) => {
   const existingEmployee = await Employee.findOne({ email });
   res.json({ isDuplicate: !!existingEmployee });
 }
+
+
