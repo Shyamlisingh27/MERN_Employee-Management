@@ -36,7 +36,11 @@ const CreateEmployee = () => {
         setDuplicateEmailError('');
         const formData = new FormData();
         Object.keys(data).forEach((key) => {
-            formData.append(key, data[key]);
+              if (key === "image") {
+                formData.append(key, data[key][0]); // Append the first file
+            } else {
+                formData.append(key, data[key]);
+            }
         });
 
         const result = await axios.post('http://localhost:8000/api/create', formData);

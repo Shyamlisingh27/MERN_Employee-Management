@@ -118,7 +118,7 @@ const EmployeeList = () => {
             <tr key={employee._id}>
               <td>{index}</td>
               <td>
-                <img src={`/uploads/${employee.image}`} alt={employee.name} style={styles.image} />
+                <img src={`http://localhost:8000/uploads/${employee.image}`} alt={employee.name} style={styles.image} />
               </td>
               <td>{employee.name}</td>
               <td>{employee.email}</td>

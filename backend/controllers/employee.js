@@ -5,6 +5,7 @@ const mongoose=require("mongoose")
 exports.createEmployee = async (req, res) => {
     try {
       const { name, email, mobile, designation, gender, course } = req.body;
+      const image = req.file ? req.file.filename : null;
       const employee = new Employee({
         name,
         email,
@@ -12,7 +13,7 @@ exports.createEmployee = async (req, res) => {
         designation,
         gender,
         course: course.split(','), // Checkbox array
-        image: req.file ? req.file.path : null,
+        image,
       });
       await employee.save();
       res.status(201).json({ message: 'Employee added successfully', employee });
